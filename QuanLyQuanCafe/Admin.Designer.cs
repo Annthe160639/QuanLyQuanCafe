@@ -103,7 +103,7 @@
             this.txbFoodID = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dtgvFood = new System.Windows.Forms.DataGridView();
             this.tpBill = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dtgvBill = new System.Windows.Forms.DataGridView();
@@ -145,7 +145,7 @@
             this.panel8.SuspendLayout();
             this.panel7.SuspendLayout();
             this.panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvFood)).BeginInit();
             this.tpBill.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvBill)).BeginInit();
@@ -857,21 +857,21 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.dataGridView1);
+            this.panel3.Controls.Add(this.dtgvFood);
             this.panel3.Location = new System.Drawing.Point(6, 84);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(463, 581);
             this.panel3.TabIndex = 0;
             // 
-            // dataGridView1
+            // dtgvFood
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 29;
-            this.dataGridView1.Size = new System.Drawing.Size(457, 575);
-            this.dataGridView1.TabIndex = 0;
+            this.dtgvFood.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgvFood.Location = new System.Drawing.Point(3, 3);
+            this.dtgvFood.Name = "dtgvFood";
+            this.dtgvFood.RowHeadersWidth = 51;
+            this.dtgvFood.RowTemplate.Height = 29;
+            this.dtgvFood.Size = new System.Drawing.Size(457, 575);
+            this.dtgvFood.TabIndex = 0;
             // 
             // tpBill
             // 
@@ -1003,7 +1003,7 @@
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
             this.panel3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgvFood)).EndInit();
             this.tpBill.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dtgvBill)).EndInit();
@@ -1090,7 +1090,7 @@
         private TextBox txbFoodID;
         private Label label2;
         private Panel panel3;
-        private DataGridView dataGridView1;
+        private DataGridView dtgvFood;
         private TabPage tpBill;
         private Panel panel1;
         private DataGridView dtgvBill;

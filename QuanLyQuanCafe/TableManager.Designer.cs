@@ -58,16 +58,16 @@
             // panel2
             // 
             this.panel2.Controls.Add(this.lsvBill);
-            this.panel2.Location = new System.Drawing.Point(666, 106);
+            this.panel2.Location = new System.Drawing.Point(587, 106);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(446, 417);
+            this.panel2.Size = new System.Drawing.Size(525, 417);
             this.panel2.TabIndex = 2;
             // 
             // lsvBill
             // 
             this.lsvBill.Location = new System.Drawing.Point(3, 3);
             this.lsvBill.Name = "lsvBill";
-            this.lsvBill.Size = new System.Drawing.Size(440, 411);
+            this.lsvBill.Size = new System.Drawing.Size(519, 411);
             this.lsvBill.TabIndex = 0;
             this.lsvBill.UseCompatibleStateImageBehavior = false;
             // 
@@ -78,9 +78,9 @@
             this.panel3.Controls.Add(this.nmDiscount);
             this.panel3.Controls.Add(this.button1);
             this.panel3.Controls.Add(this.btnCheckOut);
-            this.panel3.Location = new System.Drawing.Point(666, 529);
+            this.panel3.Location = new System.Drawing.Point(587, 529);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(446, 77);
+            this.panel3.Size = new System.Drawing.Size(525, 77);
             this.panel3.TabIndex = 3;
             // 
             // cbSwitchTable
@@ -102,7 +102,7 @@
             // 
             // nmDiscount
             // 
-            this.nmDiscount.Location = new System.Drawing.Point(223, 42);
+            this.nmDiscount.Location = new System.Drawing.Point(201, 42);
             this.nmDiscount.Name = "nmDiscount";
             this.nmDiscount.Size = new System.Drawing.Size(107, 27);
             this.nmDiscount.TabIndex = 5;
@@ -110,7 +110,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(223, 3);
+            this.button1.Location = new System.Drawing.Point(201, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(107, 33);
             this.button1.TabIndex = 4;
@@ -119,7 +119,7 @@
             // 
             // btnCheckOut
             // 
-            this.btnCheckOut.Location = new System.Drawing.Point(336, 7);
+            this.btnCheckOut.Location = new System.Drawing.Point(415, 7);
             this.btnCheckOut.Name = "btnCheckOut";
             this.btnCheckOut.Size = new System.Drawing.Size(107, 62);
             this.btnCheckOut.TabIndex = 3;
@@ -132,14 +132,14 @@
             this.panel4.Controls.Add(this.btnAddFood);
             this.panel4.Controls.Add(this.cbFood);
             this.panel4.Controls.Add(this.cbCategory);
-            this.panel4.Location = new System.Drawing.Point(666, 31);
+            this.panel4.Location = new System.Drawing.Point(587, 31);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(446, 69);
+            this.panel4.Size = new System.Drawing.Size(525, 69);
             this.panel4.TabIndex = 4;
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(373, 22);
+            this.numericUpDown1.Location = new System.Drawing.Point(452, 23);
             this.numericUpDown1.Minimum = new decimal(new int[] {
             100,
             0,
@@ -156,7 +156,7 @@
             // 
             // btnAddFood
             // 
-            this.btnAddFood.Location = new System.Drawing.Point(260, 3);
+            this.btnAddFood.Location = new System.Drawing.Point(326, 4);
             this.btnAddFood.Name = "btnAddFood";
             this.btnAddFood.Size = new System.Drawing.Size(107, 62);
             this.btnAddFood.TabIndex = 2;
@@ -168,7 +168,7 @@
             this.cbFood.FormattingEnabled = true;
             this.cbFood.Location = new System.Drawing.Point(3, 37);
             this.cbFood.Name = "cbFood";
-            this.cbFood.Size = new System.Drawing.Size(251, 28);
+            this.cbFood.Size = new System.Drawing.Size(305, 28);
             this.cbFood.TabIndex = 1;
             // 
             // cbCategory
@@ -176,14 +176,15 @@
             this.cbCategory.FormattingEnabled = true;
             this.cbCategory.Location = new System.Drawing.Point(3, 3);
             this.cbCategory.Name = "cbCategory";
-            this.cbCategory.Size = new System.Drawing.Size(251, 28);
+            this.cbCategory.Size = new System.Drawing.Size(305, 28);
             this.cbCategory.TabIndex = 0;
             // 
             // flpTable
             // 
+            this.flpTable.AutoScroll = true;
             this.flpTable.Location = new System.Drawing.Point(12, 34);
             this.flpTable.Name = "flpTable";
-            this.flpTable.Size = new System.Drawing.Size(639, 572);
+            this.flpTable.Size = new System.Drawing.Size(546, 572);
             this.flpTable.TabIndex = 5;
             // 
             // menuStrip1
@@ -217,14 +218,14 @@
             // thôngTinCáNhânToolStripMenuItem
             // 
             this.thôngTinCáNhânToolStripMenuItem.Name = "thôngTinCáNhânToolStripMenuItem";
-            this.thôngTinCáNhânToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.thôngTinCáNhânToolStripMenuItem.Size = new System.Drawing.Size(210, 26);
             this.thôngTinCáNhânToolStripMenuItem.Text = "Thông tin cá nhân";
             this.thôngTinCáNhânToolStripMenuItem.Click += new System.EventHandler(this.thôngTinCáNhânToolStripMenuItem_Click);
             // 
             // đăngXuấtToolStripMenuItem
             // 
             this.đăngXuấtToolStripMenuItem.Name = "đăngXuấtToolStripMenuItem";
-            this.đăngXuấtToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.đăngXuấtToolStripMenuItem.Size = new System.Drawing.Size(210, 26);
             this.đăngXuấtToolStripMenuItem.Text = "Đăng xuất";
             this.đăngXuấtToolStripMenuItem.Click += new System.EventHandler(this.đăngXuấtToolStripMenuItem_Click);
             // 
