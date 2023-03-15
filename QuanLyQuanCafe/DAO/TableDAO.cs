@@ -18,7 +18,10 @@ namespace QuanLyQuanCafe.DAO
         }
         public static int TableWidth = 100;
         public static int TableHeight = 100;
-
+        public void SwitchTable(int id1, int id2)
+        {
+            DataProvider.Instance.ExecuteQuery("exec USP_SwitchTable @idTable1 , @idTable2", new object[] {id1, id2});
+        }
         public List<Table> LoadTableList()
         {
             List<Table> list = new List<Table>();
