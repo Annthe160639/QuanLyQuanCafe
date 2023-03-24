@@ -9,11 +9,26 @@ namespace QuanLyQuanCafe.DAO
 {
     public class TableDAO
     {
-        QuanLyQuanCaPheContext quanLyQuanCaPheContext = new QuanLyQuanCaPheContext();
+        QuanLyQuanCaPheContext context = new QuanLyQuanCaPheContext();
+        public static string EMPTY_TABLE = "Trống";
+        public static string USING_TABLE = "Có người";
+
         public TableDAO() { }
 
-        public void changeTableStatus()
+        public void changeTableStatus(int tableId, string status)
         {
+            TableFood table = context.TableFoods.FirstOrDefault(t => t.Id == tableId);
+            if (table != null)
+            {
+                    table.Status = status;
+            }
+            context.TableFoods.Update(table);
+            context.SaveChanges();
+        }
+
+        public List<TableFood> getTableFoods()
+        {
+            return context.TableFoods.ToList();
         }
     }
 }

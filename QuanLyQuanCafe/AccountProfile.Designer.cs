@@ -172,6 +172,7 @@
             this.btnUpdate.TabIndex = 3;
             this.btnUpdate.Text = "Cập nhật";
             this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // panel3
             // 
@@ -189,7 +190,6 @@
             this.txbDisplayName.Name = "txbDisplayName";
             this.txbDisplayName.Size = new System.Drawing.Size(279, 27);
             this.txbDisplayName.TabIndex = 2;
-            this.txbDisplayName.UseSystemPasswordChar = true;
             // 
             // label1
             // 

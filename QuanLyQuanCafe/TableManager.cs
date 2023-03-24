@@ -16,19 +16,21 @@ namespace QuanLyQuanCafe
 {
     public partial class TableManager : Form
     {
-        QuanLyQuanCaPheContext context = new QuanLyQuanCaPheContext();
-        public TableManager()
+        Account currentAccount;
+        public TableManager(Account account)
         {
             InitializeComponent();
             LoadTable();
             LoadCategory();
             LoadComboBoxTable(cbSwitchTable);
+            this.currentAccount = account;
         }
         #region Method
         void LoadCategory()
         {
+            QuanLyQuanCaPheContext context = new QuanLyQuanCaPheContext();
             List<FoodCategory> categories = context.FoodCategories.ToList();
-            cbCategory.DataSource= categories;
+            cbCategory.DataSource = categories;
             cbCategory.DisplayMember = "Name";
             cbCategory.ValueMember = "Id";
         }
@@ -36,6 +38,7 @@ namespace QuanLyQuanCafe
         {
             if (id > 0)
             {
+                QuanLyQuanCaPheContext context = new QuanLyQuanCaPheContext();
                 List<Food> listFood = context.Foods.Where(f => f.CategoryId == id).ToList();
                 cbFood.DataSource = listFood;
                 cbFood.DisplayMember = "Name";
@@ -45,7 +48,8 @@ namespace QuanLyQuanCafe
         void LoadTable()
         {
             flpTable.Controls.Clear();
-            List<TableFood> tableList = context.TableFoods.ToList();
+            TableDAO tableDAO = new TableDAO();
+            List<TableFood> tableList = tableDAO.getTableFoods();
             foreach (TableFood table in tableList)
             {
                 Button btn = new Button() { Width = 100, Height = 100 };
@@ -67,7 +71,8 @@ namespace QuanLyQuanCafe
         void ShowBill(int id)
         {
             lsvBill.Items.Clear();
-            var listBillInfo = context.BillInfos.Include(b => b.Bill).Include(bi => bi.Food).Where(b => b.Bill.TableId == id).ToList();
+            BillInfoDAO billInfoDAO = new BillInfoDAO();
+            var listBillInfo = billInfoDAO.GetMenu(id);
             double totalPrice = 0;
             foreach (var menu in listBillInfo)
             {
@@ -78,7 +83,7 @@ namespace QuanLyQuanCafe
                 lsvBill.Items.Add(lsvItem);
                 totalPrice += menu.Food.Price * menu.Count;
             }
-            CultureInfo cultureInfo= new CultureInfo("vi-VN");
+            CultureInfo cultureInfo = new CultureInfo("vi-VN");
             txbTotalPrice.Text = totalPrice.ToString("c", cultureInfo);
         }
 
@@ -97,7 +102,7 @@ namespace QuanLyQuanCafe
 
         private void thôngTinCáNhânToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AccountProfile f = new AccountProfile();
+            AccountProfile f = new AccountProfile(currentAccount);
             f.ShowDialog();
         }
 
@@ -107,7 +112,7 @@ namespace QuanLyQuanCafe
             f.ShowDialog();
 
         }
-        
+
 
         private void cbCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -121,6 +126,8 @@ namespace QuanLyQuanCafe
 
         private void btnAddFood_Click(object sender, EventArgs e)
         {
+            TableDAO tableDAO = new TableDAO();
+            QuanLyQuanCaPheContext context = new QuanLyQuanCaPheContext();
             TableFood table = lsvBill.Tag as TableFood;
             Bill bill = context.Bills.FirstOrDefault(b => b.TableId == table.Id && b.Status == 0);
             int foodId = (int)cbFood.SelectedValue;
@@ -136,6 +143,7 @@ namespace QuanLyQuanCafe
             {
                 Bill insertBill = new Bill();
                 insertBill.TableId = table.Id;
+                insertBill.DateCheckin = DateTime.Now;
                 context.Bills.Add(insertBill);
                 context.SaveChanges();
                 BillInfo billInfo = new BillInfo();
@@ -146,7 +154,7 @@ namespace QuanLyQuanCafe
                 context.SaveChanges();
             }
             ShowBill(table.Id);
-            
+            tableDAO.changeTableStatus(table.Id, TableDAO.USING_TABLE);
             LoadTable();
 
         }
@@ -154,6 +162,8 @@ namespace QuanLyQuanCafe
 
         private void btnCheckOut_Click(object sender, EventArgs e)
         {
+            TableDAO tableDAO = new TableDAO();
+            QuanLyQuanCaPheContext context = new QuanLyQuanCaPheContext();
             TableFood table = lsvBill.Tag as TableFood;
             Bill bill = context.Bills.FirstOrDefault(b => b.TableId == table.Id && b.Status == 0);
             if (bill != null)
@@ -166,16 +176,18 @@ namespace QuanLyQuanCafe
                 if (MessageBox.Show(
                     string.Format(
                         @"Bạn có chắc thanh toán hóa đơn cho bàn {0}?
-                          Tổng tiền - (Tổng tiền / 100) x Giảm giá = {1} - ({1} / 100) * {2} = {3}", 
-                          table.Name, totalPrice, discount, final), 
-                          "Thông báo", 
+                          Tổng tiền - (Tổng tiền / 100) x Giảm giá = {1} - ({1} / 100) * {2} = {3}",
+                          table.Name, totalPrice, discount, final),
+                          "Thông báo",
                           MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
                 {
                     bill.Status = 1;
                     bill.Discount = discount;
+                    bill.DateCheckout = DateTime.Now;
                     context.Bills.Update(bill);
                     context.SaveChanges();
                     ShowBill(bill.TableId);
+                    tableDAO.changeTableStatus(table.Id, TableDAO.EMPTY_TABLE);
                     LoadTable();
 
                 }
@@ -193,8 +205,9 @@ namespace QuanLyQuanCafe
         }
         public void LoadComboBoxTable(ComboBox cb)
         {
+            QuanLyQuanCaPheContext context = new QuanLyQuanCaPheContext();
             cb.DataSource = context.TableFoods.ToList();
-            cb.DisplayMember = "Name";  
+            cb.DisplayMember = "Name";
         }
     }
 }

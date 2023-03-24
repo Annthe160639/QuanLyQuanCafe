@@ -61,7 +61,7 @@
             this.txbTableName = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.panel27 = new System.Windows.Forms.Panel();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.txbTableId = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.panel28 = new System.Windows.Forms.Panel();
             this.dtgvTable = new System.Windows.Forms.DataGridView();
@@ -106,7 +106,14 @@
             this.dtgvFood = new System.Windows.Forms.DataGridView();
             this.tpBill = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbTotalPrice = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.dtgvBill = new System.Windows.Forms.DataGridView();
+            this.billId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.billCheckin = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.billCheckout = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.billDiscount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.billTotalPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnViewBill = new System.Windows.Forms.Button();
             this.dtpkToDate = new System.Windows.Forms.DateTimePicker();
@@ -185,6 +192,7 @@
             this.btnShowAccount.TabIndex = 3;
             this.btnShowAccount.Text = "Xem";
             this.btnShowAccount.UseVisualStyleBackColor = true;
+            this.btnShowAccount.Click += new System.EventHandler(this.btnShowAccount_Click);
             // 
             // btnUpdateAccount
             // 
@@ -194,6 +202,7 @@
             this.btnUpdateAccount.TabIndex = 2;
             this.btnUpdateAccount.Text = "Sửa";
             this.btnUpdateAccount.UseVisualStyleBackColor = true;
+            this.btnUpdateAccount.Click += new System.EventHandler(this.btnUpdateAccount_Click);
             // 
             // btnDeleteAccount
             // 
@@ -203,6 +212,7 @@
             this.btnDeleteAccount.TabIndex = 1;
             this.btnDeleteAccount.Text = "Xóa";
             this.btnDeleteAccount.UseVisualStyleBackColor = true;
+            this.btnDeleteAccount.Click += new System.EventHandler(this.btnDeleteAccount_Click);
             // 
             // btnAddAccount
             // 
@@ -212,6 +222,7 @@
             this.btnAddAccount.TabIndex = 0;
             this.btnAddAccount.Text = "Thêm";
             this.btnAddAccount.UseVisualStyleBackColor = true;
+            this.btnAddAccount.Click += new System.EventHandler(this.btnAddAccount_Click);
             // 
             // panel12
             // 
@@ -365,6 +376,7 @@
             this.btnShowTable.TabIndex = 3;
             this.btnShowTable.Text = "Xem";
             this.btnShowTable.UseVisualStyleBackColor = true;
+            this.btnShowTable.Click += new System.EventHandler(this.btnShowTable_Click);
             // 
             // btnUpdateTable
             // 
@@ -374,6 +386,7 @@
             this.btnUpdateTable.TabIndex = 2;
             this.btnUpdateTable.Text = "Sửa";
             this.btnUpdateTable.UseVisualStyleBackColor = true;
+            this.btnUpdateTable.Click += new System.EventHandler(this.btnUpdateTable_Click);
             // 
             // btnDeleteTable
             // 
@@ -383,6 +396,7 @@
             this.btnDeleteTable.TabIndex = 1;
             this.btnDeleteTable.Text = "Xóa";
             this.btnDeleteTable.UseVisualStyleBackColor = true;
+            this.btnDeleteTable.Click += new System.EventHandler(this.btnDeleteTable_Click);
             // 
             // btnAddTable
             // 
@@ -392,6 +406,7 @@
             this.btnAddTable.TabIndex = 0;
             this.btnAddTable.Text = "Thêm";
             this.btnAddTable.UseVisualStyleBackColor = true;
+            this.btnAddTable.Click += new System.EventHandler(this.btnAddTable_Click);
             // 
             // panel22
             // 
@@ -459,21 +474,21 @@
             // 
             // panel27
             // 
-            this.panel27.Controls.Add(this.textBox5);
+            this.panel27.Controls.Add(this.txbTableId);
             this.panel27.Controls.Add(this.label10);
             this.panel27.Location = new System.Drawing.Point(6, 3);
             this.panel27.Name = "panel27";
             this.panel27.Size = new System.Drawing.Size(435, 52);
             this.panel27.TabIndex = 1;
             // 
-            // textBox5
+            // txbTableId
             // 
-            this.textBox5.Location = new System.Drawing.Point(137, 12);
-            this.textBox5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.ReadOnly = true;
-            this.textBox5.Size = new System.Drawing.Size(278, 27);
-            this.textBox5.TabIndex = 1;
+            this.txbTableId.Location = new System.Drawing.Point(137, 12);
+            this.txbTableId.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txbTableId.Name = "txbTableId";
+            this.txbTableId.ReadOnly = true;
+            this.txbTableId.Size = new System.Drawing.Size(278, 27);
+            this.txbTableId.TabIndex = 1;
             // 
             // label10
             // 
@@ -535,6 +550,7 @@
             this.btnShowCategory.TabIndex = 3;
             this.btnShowCategory.Text = "Xem";
             this.btnShowCategory.UseVisualStyleBackColor = true;
+            this.btnShowCategory.Click += new System.EventHandler(this.btnShowCategory_Click);
             // 
             // btnUpdateCategory
             // 
@@ -544,6 +560,7 @@
             this.btnUpdateCategory.TabIndex = 2;
             this.btnUpdateCategory.Text = "Sửa";
             this.btnUpdateCategory.UseVisualStyleBackColor = true;
+            this.btnUpdateCategory.Click += new System.EventHandler(this.btnUpdateCategory_Click);
             // 
             // btnDeleteCategory
             // 
@@ -553,6 +570,7 @@
             this.btnDeleteCategory.TabIndex = 1;
             this.btnDeleteCategory.Text = "Xóa";
             this.btnDeleteCategory.UseVisualStyleBackColor = true;
+            this.btnDeleteCategory.Click += new System.EventHandler(this.btnDeleteCategory_Click);
             // 
             // btnAddCategory
             // 
@@ -562,6 +580,7 @@
             this.btnAddCategory.TabIndex = 0;
             this.btnAddCategory.Text = "Thêm";
             this.btnAddCategory.UseVisualStyleBackColor = true;
+            this.btnAddCategory.Click += new System.EventHandler(this.btnAddCategory_Click);
             // 
             // panel21
             // 
@@ -683,6 +702,7 @@
             this.btnSearch.TabIndex = 4;
             this.btnSearch.Text = "Tìm";
             this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // panel5
             // 
@@ -703,6 +723,7 @@
             this.btnShowFood.TabIndex = 3;
             this.btnShowFood.Text = "Xem";
             this.btnShowFood.UseVisualStyleBackColor = true;
+            this.btnShowFood.Click += new System.EventHandler(this.btnShowFood_Click);
             // 
             // btnUpdateFood
             // 
@@ -712,6 +733,7 @@
             this.btnUpdateFood.TabIndex = 2;
             this.btnUpdateFood.Text = "Sửa";
             this.btnUpdateFood.UseVisualStyleBackColor = true;
+            this.btnUpdateFood.Click += new System.EventHandler(this.btnUpdateFood_Click);
             // 
             // btnDeleteFood
             // 
@@ -721,6 +743,7 @@
             this.btnDeleteFood.TabIndex = 1;
             this.btnDeleteFood.Text = "Xóa";
             this.btnDeleteFood.UseVisualStyleBackColor = true;
+            this.btnDeleteFood.Click += new System.EventHandler(this.btnDeleteFood_Click);
             // 
             // btnAddFood
             // 
@@ -730,6 +753,7 @@
             this.btnAddFood.TabIndex = 0;
             this.btnAddFood.Text = "Thêm";
             this.btnAddFood.UseVisualStyleBackColor = true;
+            this.btnAddFood.Click += new System.EventHandler(this.btnAddFood_Click);
             // 
             // panel4
             // 
@@ -887,21 +911,86 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.lbTotalPrice);
+            this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.dtgvBill);
             this.panel1.Location = new System.Drawing.Point(6, 59);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(913, 606);
             this.panel1.TabIndex = 3;
             // 
+            // lbTotalPrice
+            // 
+            this.lbTotalPrice.AutoSize = true;
+            this.lbTotalPrice.Location = new System.Drawing.Point(708, 11);
+            this.lbTotalPrice.Name = "lbTotalPrice";
+            this.lbTotalPrice.Size = new System.Drawing.Size(0, 20);
+            this.lbTotalPrice.TabIndex = 2;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(660, 11);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(49, 20);
+            this.label8.TabIndex = 1;
+            this.label8.Text = "Total: ";
+            // 
             // dtgvBill
             // 
             this.dtgvBill.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dtgvBill.Location = new System.Drawing.Point(0, 0);
+            this.dtgvBill.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.billId,
+            this.billCheckin,
+            this.billCheckout,
+            this.billDiscount,
+            this.billTotalPrice});
+            this.dtgvBill.Location = new System.Drawing.Point(0, 46);
             this.dtgvBill.Name = "dtgvBill";
             this.dtgvBill.RowHeadersWidth = 51;
             this.dtgvBill.RowTemplate.Height = 29;
-            this.dtgvBill.Size = new System.Drawing.Size(913, 606);
+            this.dtgvBill.Size = new System.Drawing.Size(913, 560);
             this.dtgvBill.TabIndex = 0;
+            // 
+            // billId
+            // 
+            this.billId.DataPropertyName = "Id";
+            this.billId.HeaderText = "Id";
+            this.billId.MinimumWidth = 6;
+            this.billId.Name = "billId";
+            this.billId.Width = 125;
+            // 
+            // billCheckin
+            // 
+            this.billCheckin.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.billCheckin.DataPropertyName = "Checkin";
+            this.billCheckin.HeaderText = "Checkin";
+            this.billCheckin.MinimumWidth = 6;
+            this.billCheckin.Name = "billCheckin";
+            // 
+            // billCheckout
+            // 
+            this.billCheckout.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.billCheckout.DataPropertyName = "Checkout";
+            this.billCheckout.HeaderText = "Checkout";
+            this.billCheckout.MinimumWidth = 6;
+            this.billCheckout.Name = "billCheckout";
+            // 
+            // billDiscount
+            // 
+            this.billDiscount.DataPropertyName = "Discount";
+            this.billDiscount.HeaderText = "Discount";
+            this.billDiscount.MinimumWidth = 6;
+            this.billDiscount.Name = "billDiscount";
+            this.billDiscount.Width = 125;
+            // 
+            // billTotalPrice
+            // 
+            this.billTotalPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.billTotalPrice.DataPropertyName = "TotalPrice";
+            this.billTotalPrice.HeaderText = "Total Price";
+            this.billTotalPrice.MinimumWidth = 6;
+            this.billTotalPrice.Name = "billTotalPrice";
             // 
             // panel2
             // 
@@ -921,6 +1010,7 @@
             this.btnViewBill.TabIndex = 2;
             this.btnViewBill.Text = "Thống kê";
             this.btnViewBill.UseVisualStyleBackColor = true;
+            this.btnViewBill.Click += new System.EventHandler(this.btnViewBill_Click);
             // 
             // dtpkToDate
             // 
@@ -1006,6 +1096,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtgvFood)).EndInit();
             this.tpBill.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvBill)).EndInit();
             this.panel2.ResumeLayout(false);
             this.tcAdmin.ResumeLayout(false);
@@ -1048,7 +1139,7 @@
         private TextBox txbTableName;
         private Label label9;
         private Panel panel27;
-        private TextBox textBox5;
+        private TextBox txbTableId;
         private Label label10;
         private Panel panel28;
         private DataGridView dtgvTable;
@@ -1099,5 +1190,12 @@
         private DateTimePicker dtpkToDate;
         private DateTimePicker dtpkFromDate;
         private TabControl tcAdmin;
+        private DataGridViewTextBoxColumn billId;
+        private DataGridViewTextBoxColumn billCheckin;
+        private DataGridViewTextBoxColumn billCheckout;
+        private DataGridViewTextBoxColumn billDiscount;
+        private DataGridViewTextBoxColumn billTotalPrice;
+        private Label lbTotalPrice;
+        private Label label8;
     }
 }

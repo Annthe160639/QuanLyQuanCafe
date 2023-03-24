@@ -4,7 +4,6 @@ namespace QuanLyQuanCafe
 {
     public partial class Login : Form
     {
-        QuanLyQuanCaPheContext context = new QuanLyQuanCaPheContext();
         public Login()
         {
             InitializeComponent();
@@ -13,13 +12,15 @@ namespace QuanLyQuanCafe
         private void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txbUsername.Text;
-            string password = txbPassword.Text; 
-            if (login(username, password))
+            string password = txbPassword.Text;
+            QuanLyQuanCaPheContext context = new QuanLyQuanCaPheContext();
+            Account acc = context.Accounts.FirstOrDefault(a => a.Username.Equals(username) && a.Password.Equals(password));
+            if (acc is not null)
             {
-            TableManager f = new TableManager();
-            this.Hide();
-            f.ShowDialog();
-            this.Show();
+                TableManager f = new TableManager(acc);
+                this.Hide();
+                f.ShowDialog();
+                this.Show();
             }
             else
             {
@@ -27,10 +28,6 @@ namespace QuanLyQuanCafe
             }
         }
 
-        bool login(string username, string password)
-        {
-            return context.Accounts.FirstOrDefault(a => a.Username.Equals(username) && a.Password.Equals(password)) is not null;
-        }
         private void btnExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -38,10 +35,11 @@ namespace QuanLyQuanCafe
 
         private void Login_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Bạn có thật sự muốn thoát chương trình?", "Thông báo",MessageBoxButtons.OKCancel) != System.Windows.Forms.DialogResult.OK)
+            if (MessageBox.Show("Bạn có thật sự muốn thoát chương trình?", "Thông báo", MessageBoxButtons.OKCancel) != System.Windows.Forms.DialogResult.OK)
             {
                 e.Cancel = true;
-            }else
+            }
+            else
             {
                 e.Cancel = false;
             }
