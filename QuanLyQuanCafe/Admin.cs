@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuanLyQuanCafe.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +14,7 @@ namespace QuanLyQuanCafe
 {
     public partial class Admin : Form
     {
+        QuanLyQuanCaPheContext context = new QuanLyQuanCaPheContext();
         public Admin()
         {
             InitializeComponent();
@@ -20,15 +22,13 @@ namespace QuanLyQuanCafe
         }
         void LoadFoodList()
         {
-            string query = "select * from food";
-
-            dtgvFood.DataSource = DataProvider.Instance.ExecuteQuery(query);
+            dtgvFood.DataSource = context.Foods.ToList();
         }
         void LoadAccountList()
         {
             string query = "USP_GetAccountByUsername @username";
             
-            dtgvAccount.DataSource = DataProvider.Instance.ExecuteQuery(query, new object[] { "an" });
+            dtgvAccount.DataSource = context.Accounts.ToList();
         }
         
     }

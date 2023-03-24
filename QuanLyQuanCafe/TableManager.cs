@@ -1,5 +1,6 @@
-﻿using QuanLyQuanCafe.DAO;
-using QuanLyQuanCafe.DTO;
+﻿using Microsoft.EntityFrameworkCore;
+using QuanLyQuanCafe.DAO;
+using QuanLyQuanCafe.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,7 @@ namespace QuanLyQuanCafe
 {
     public partial class TableManager : Form
     {
+        QuanLyQuanCaPheContext context = new QuanLyQuanCaPheContext();
         public TableManager()
         {
             InitializeComponent();
@@ -25,23 +27,28 @@ namespace QuanLyQuanCafe
         #region Method
         void LoadCategory()
         {
-            List<Category> categories = CategoryDAO.Instance.getListCategory();
+            List<FoodCategory> categories = context.FoodCategories.ToList();
             cbCategory.DataSource= categories;
             cbCategory.DisplayMember = "Name";
+            cbCategory.ValueMember = "Id";
         }
         void LoadFoodListByCategoryId(int id)
         {
-            List<Food> listFood = FoodDAO.Instance.getFoodByCategoryId(id);
-            cbFood.DataSource= listFood; 
-            cbFood.DisplayMember = "Name";
+            if (id > 0)
+            {
+                List<Food> listFood = context.Foods.Where(f => f.CategoryId == id).ToList();
+                cbFood.DataSource = listFood;
+                cbFood.DisplayMember = "Name";
+                cbFood.ValueMember = "Id";
+            }
         }
         void LoadTable()
         {
             flpTable.Controls.Clear();
-            List<Table> tableList = TableDAO.Instance.LoadTableList();
-            foreach (Table table in tableList)
+            List<TableFood> tableList = context.TableFoods.ToList();
+            foreach (TableFood table in tableList)
             {
-                Button btn = new Button() { Width = TableDAO.TableWidth, Height = TableDAO.TableHeight };
+                Button btn = new Button() { Width = 100, Height = 100 };
                 btn.Text = table.Name + Environment.NewLine + table.Status;
                 btn.Click += btn_Click;
                 btn.Tag = table;
@@ -60,16 +67,16 @@ namespace QuanLyQuanCafe
         void ShowBill(int id)
         {
             lsvBill.Items.Clear();
-            List<Menu> listBillInfo = MenuDAO.Instance.GetMenuByTableId(id);
-            float totalPrice = 0;
-            foreach (Menu menu in listBillInfo)
+            var listBillInfo = context.BillInfos.Include(b => b.Bill).Include(bi => bi.Food).Where(b => b.Bill.TableId == id).ToList();
+            double totalPrice = 0;
+            foreach (var menu in listBillInfo)
             {
-                ListViewItem lsvItem = new ListViewItem(menu.FoodName.ToString());
+                ListViewItem lsvItem = new ListViewItem(menu.Food.Name.ToString());
                 lsvItem.SubItems.Add(menu.Count.ToString());
-                lsvItem.SubItems.Add(menu.Price.ToString());
-                lsvItem.SubItems.Add(menu.TotalPrice.ToString());
+                lsvItem.SubItems.Add(menu.Food.Price.ToString());
+                lsvItem.SubItems.Add((menu.Food.Price * menu.Count).ToString());
                 lsvBill.Items.Add(lsvItem);
-                totalPrice += menu.TotalPrice;
+                totalPrice += menu.Food.Price * menu.Count;
             }
             CultureInfo cultureInfo= new CultureInfo("vi-VN");
             txbTotalPrice.Text = totalPrice.ToString("c", cultureInfo);
@@ -79,7 +86,7 @@ namespace QuanLyQuanCafe
         #region Events
         void btn_Click(object sender, EventArgs e)
         {
-            int tableID = ((sender as Button).Tag as Table).ID;
+            int tableID = ((sender as Button).Tag as TableFood).Id;
             lsvBill.Tag = (sender as Button).Tag;
             ShowBill(tableID);
         }
@@ -107,27 +114,39 @@ namespace QuanLyQuanCafe
             int id = 0;
             ComboBox cb = sender as ComboBox;
             if (cb.SelectedItem == null) return;
-            Category selected = cb.SelectedItem as Category;
+            FoodCategory selected = cb.SelectedItem as FoodCategory;
             id = selected.Id;
             LoadFoodListByCategoryId(id);
         }
 
         private void btnAddFood_Click(object sender, EventArgs e)
         {
-            Table table = lsvBill.Tag as Table;
-            int billId = BillDAO.Instance.GetUncheckBillIDByTableID(table.ID);
-            int foodId = (cbFood.SelectedItem as Food).Id;
+            TableFood table = lsvBill.Tag as TableFood;
+            Bill bill = context.Bills.FirstOrDefault(b => b.TableId == table.Id && b.Status == 0);
+            int foodId = (int)cbFood.SelectedValue;
             int count = (int)nmFoodCount.Value;
-            if (billId == -1)
+            if (bill is not null)
             {
-                BillDAO.Instance.InserBill(table.ID);
-                BillInfoDAO.Instance.InsertBillInfo(BillDAO.Instance.GetMaxIdBill(), foodId, count);
+                BillInfo billInfo = context.BillInfos.FirstOrDefault(b => b.BillId == bill.Id);
+                billInfo.Count += count;
+                context.BillInfos.Update(billInfo);
+                context.SaveChanges();
             }
             else
             {
-                BillInfoDAO.Instance.InsertBillInfo(billId, foodId, count);
+                Bill insertBill = new Bill();
+                insertBill.TableId = table.Id;
+                context.Bills.Add(insertBill);
+                context.SaveChanges();
+                BillInfo billInfo = new BillInfo();
+                billInfo.BillId = insertBill.Id;
+                billInfo.FoodId = foodId;
+                billInfo.Count = count;
+                context.BillInfos.Add(billInfo);
+                context.SaveChanges();
             }
-            ShowBill(table.ID);
+            ShowBill(table.Id);
+            
             LoadTable();
 
         }
@@ -135,18 +154,28 @@ namespace QuanLyQuanCafe
 
         private void btnCheckOut_Click(object sender, EventArgs e)
         {
-            Table table = lsvBill.Tag as Table;
-            int billId = BillDAO.Instance.GetUncheckBillIDByTableID(table.ID);
-            int discount = (int)nmDiscount.Value;
-            Console.WriteLine(txbTotalPrice.Text);
-            double totalPrice = Convert.ToDouble(txbTotalPrice.Text.Split(' ')[0]);
-            double final = totalPrice - (totalPrice / 100 * discount);
-            if(billId != -1)
+            TableFood table = lsvBill.Tag as TableFood;
+            Bill bill = context.Bills.FirstOrDefault(b => b.TableId == table.Id && b.Status == 0);
+            if (bill != null)
             {
-                if(MessageBox.Show(string.Format("Bạn có chắc thanh toán hóa đơn cho bàn {0}?\nTổng tiền - (Tổng tiền / 100) x Giảm giá = {1} - ({1} / 100) * {2} = {3}",table.Name, totalPrice, discount, final), "Thông báo", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
+                int discount = (int)nmDiscount.Value;
+                Console.WriteLine(txbTotalPrice.Text);
+                double totalPrice = Convert.ToDouble(txbTotalPrice.Text.Split(' ')[0]);
+                double final = totalPrice - (totalPrice / 100 * discount);
+
+                if (MessageBox.Show(
+                    string.Format(
+                        @"Bạn có chắc thanh toán hóa đơn cho bàn {0}?
+                          Tổng tiền - (Tổng tiền / 100) x Giảm giá = {1} - ({1} / 100) * {2} = {3}", 
+                          table.Name, totalPrice, discount, final), 
+                          "Thông báo", 
+                          MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
                 {
-                    BillDAO.Instance.CheckOut(billId, discount );
-                    ShowBill(table.ID);
+                    bill.Status = 1;
+                    bill.Discount = discount;
+                    context.Bills.Update(bill);
+                    context.SaveChanges();
+                    ShowBill(bill.TableId);
                     LoadTable();
 
                 }
@@ -155,16 +184,16 @@ namespace QuanLyQuanCafe
 
         private void btnSwitchTable_Click(object sender, EventArgs e)
         {
-            int id1 = (lsvBill.Tag as Table).ID;
-            int id2 = (cbSwitchTable.SelectedItem as Table).ID;
-            if (MessageBox.Show(string.Format("Bạn có thật sự muốn chuyển bàn {0} qua bàn {1}?", (lsvBill.Tag as Table).Name, (cbSwitchTable.SelectedItem as Table).Name), "Thông báo", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
+            int id1 = (lsvBill.Tag as TableFood).Id;
+            int id2 = (cbSwitchTable.SelectedItem as TableFood).Id;
+            if (MessageBox.Show(string.Format("Bạn có thật sự muốn chuyển bàn {0} qua bàn {1}?", (lsvBill.Tag as TableFood).Name, (cbSwitchTable.SelectedItem as TableFood).Name), "Thông báo", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
             {
-                TableDAO.Instance.SwitchTable(0, 1);
+                DataProvider.Instance.ExecuteQuery("exec USP_SwitchTable @idTable1 , @idTable2", new object[] { id1, id2 });
             }
         }
         public void LoadComboBoxTable(ComboBox cb)
         {
-            cb.DataSource = TableDAO.Instance.LoadTableList();
+            cb.DataSource = context.TableFoods.ToList();
             cb.DisplayMember = "Name";  
         }
     }

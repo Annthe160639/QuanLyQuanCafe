@@ -1,9 +1,10 @@
-﻿using QuanLyQuanCafe.DAO;
+﻿using QuanLyQuanCafe.Models;
 
 namespace QuanLyQuanCafe
 {
     public partial class Login : Form
     {
+        QuanLyQuanCaPheContext context = new QuanLyQuanCaPheContext();
         public Login()
         {
             InitializeComponent();
@@ -26,9 +27,9 @@ namespace QuanLyQuanCafe
             }
         }
 
-        static bool login(string username, string password)
+        bool login(string username, string password)
         {
-            return AccountDAO.Instance.login(username, password);
+            return context.Accounts.FirstOrDefault(a => a.Username.Equals(username) && a.Password.Equals(password)) is not null;
         }
         private void btnExit_Click(object sender, EventArgs e)
         {
